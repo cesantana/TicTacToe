@@ -1,3 +1,5 @@
+var puntosX=0;
+var puntosY=0;
 
 var HelloWorldLayer = cc.Layer.extend({
     table:null,
@@ -111,10 +113,33 @@ var HelloWorldLayer = cc.Layer.extend({
             }
             
             if(target.ref != " "){
-                alert("Se acabo el juego!!! Gano: "+target.juega);
-                limpiarTabla();
+                alert("Se acabo el juego!!! Gano: "+target.juega + "\n Juega otra vez!!!");
+                 if (target.juega=="X")
+                    {
+                        puntosX+=1;
+                    }
+                else
+                    {
+                        puntosY+=1;
+                    }
+                score();
+                
             }
         }
+        
+        //scoreboard
+        function score()
+        {
+        limpiarTabla();var size = cc.winSize;
+		this.size = size;
+        target.removeChildByTag(15, true);
+        var board = new cc.LabelTTF("Puntos X: " +puntosX +"   Puntos O: " +puntosY, "Arial", 25);
+        board.x = size.width/2;
+        board.y = size.height/2 + 210;
+        board.setTag(15);
+        target.addChild(board, 1);        
+        }
+
         
         function horizontal(){
             //checking Horizontally
@@ -188,13 +213,17 @@ var HelloWorldLayer = cc.Layer.extend({
         helloLabel.y = size.height / 2 + 170;
         this.addChild(helloLabel, 5);
         
-        
-        
         // Adding Table Sprite
         this.table = new cc.Sprite(res.tablero_png);
         this.table.attr({x: size.width / 2,y: size.height / 2});
         this.addChild(this.table, 0);
-		
+        
+        var board = new cc.LabelTTF("Puntos X: " +puntosX +"   Puntos O: " +puntosY, "Arial", 25);
+        board.x = size.width/2;
+        board.y = size.height/2 + 210;
+        board.setTag(15);
+        this.addChild(board,1);
+        
 		//Inicializando eventos
 		cc.eventManager.addListener({
 			event: cc.EventListener.TOUCH_ONE_BY_ONE,
